@@ -1,0 +1,124 @@
+Module 5: Developing Flexible NoSQL Solutions
+
+The two major types of databases are:
+•Relational databases
+•Nonrelational databases
+
+Amazon Relational Database Service (Amazon RD) offers six database engines:
+•Amazon Aurora
+•PostgreSQL
+•MySQL
+•MariaDB
+•Oracle Database
+•Microsoft SQL Server
+-> Amazon Aurora is a database that is built for the cloud and is compatible with MySQL and PostgreSQ.
+
+AWS database options: Nonrelational:
++ Amazon DynamoDB is a key-value and document database
++ Amazon ElastiCache is an in-memory data store
++ Amazon Neptune is a graph database
+
+Section 3: Key concepts for DynamoDB
+- Basic components of DynamoDB:
++ Tables
++ Items
++ Attributes
++ Primary key
+
+- Types of primary keys:
+•Simple primary key: 1 partition key
+•Composite primary key: 1 partition key + 1 sort key
+// sorted index on the sort key attribute
+// it's possible for two items to have the same partition key value. However, those two items must have different sort key value.
+
+- Items and attribute types: Each attribute has a name and a value. An attribute value can be one of the following types:
+•Scalar types: Number, string, binary, Boolean, and null
+•Set types (multi-value types): String set, number set, and binary set
+•Document types: List and map.
+// The size of an item is the sum of the lengths of its attribute names and values. An item can be up to 400 KB in size.
+
+Section 4: Partitions and data distribution
+
+DynamoDB stores data in partitions. A partition is an allocation of storage for a table. It’s backed by solid state drives (SSDs), and is automatically replicated across multiple Availability Zones within an AWS Region. Partition management is handled entirely by DynamoDB
+
+- simple primary key: hash attribute
+- composite primary key: range attribute (the sort key).
+
+•With a simple primary key, the key determines which partitions are selected.
+
+•With a composite primary key, the key still determines which partitions are selected on the key, but the order is based on the sort key
+
+Section 5: Secondary indexes
+•Global secondary index: An index with a partition key and a sort key, both of which can be different from the keys in the base table.
+•Local secondary index: An index that has the same partition key as the base table, but a different sort key. 
+// Each table can have up to 20 global secondary indexes (default limit) per table, and up to 5 local secondary indexes per table.
+
+Section 6: Read/write throughput
+
+DynamoDB automatically replicates your data across multiple Availability Zones in an AWS Region
+•Eventually consistent reads (Mặc định): có thể chưa phải là dữ liệu mới nhất.
+•Eventually consistent reads: dữ liệu bạn đọc ra là bản mới nhất. Không áp dụng cho Global Secondary Index.
+
+Transactions: (ACID) 
+
+Provisioned read/write throughput:
+- provisioned:
+Gồm 2 loại đơn vị:
+RCU (Read Capacity Unit) – Đơn vị đọc
+WCU (Write Capacity Unit) – Đơn vị ghi
+// Nếu vượt quá provisioned → bị throttling
+- on-demand throughput.
+
+- RCU – Read Capacity Unit
+1 RCU = 1 đọc/giây (strongly consistent read) item ≤ 4 KB
+1 RCU = 2 lần đọc/giây (eventually consistent read) item ≤ 4 KB
+- WCU – Write Capacity Unit
+1 WCU = 1 ghi/giây với item ≤ 1 KB
+
+Section 7: Streams and global tables
+DynamoDB Streams ghi lại các thay đổi ở mức mục (item-level)
++ Stream Record
++ Shards
++ Dữ liệu trong DynamoDB Streams được lưu trữ tối đa 24 giờ.
+
+Global tables: Global tables offer a solution to deploy a multi-Region, multi-active database without needing to build and maintain your own replication solution.
+
+Global tables: Data replication:
++ Global tables use DynamoDB Streams to propagate changes between replicas.
+
+Global tables: Concurrent updates:
++ use a last writer wins
+
+Global tables: Read consistency
+- strongly consistent reads require the use of a replica in the same Region where the client is running.
+
+Section 8: Backup and restore
+- On-demand backups
+- Point-in-time recovery
+
+Section 9: Basic operations for DynamoDB tables
+- Amazon DynamoDB API operations
+Amazon DynamoDB API to invoke the following types of operations from an application:
+•Control operations
+•Data operations
+•Batch operations
+•Transaction operations
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
